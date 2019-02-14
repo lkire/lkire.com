@@ -2,9 +2,13 @@ version: '3'
 
 services:
   demos:
+    depends_on:
+      - nginx
     image: localhost:32000/alpine-miniconda3-pyviz:latest
     volumes:
       - ~/Documents/betest:/mnt/betest:ro
+    #reminder: fix for internal use only and add REST API for external
+
     ports:
       - 5006:5006
     deploy:
@@ -16,6 +20,10 @@ services:
     depends_on:
       - nginx
     image: localhost:32000/fetest:latest
+    links:
+      - demos
+    volumes:
+      - /home/alkire/Documents/fetest:/app:ro
     restart: always
 
   nginx:  
