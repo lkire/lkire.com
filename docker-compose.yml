@@ -1,10 +1,21 @@
 version: '3'
 
 services:
+  demos:
+    image: localhost:32000/alpine-miniconda3-pyviz:latest
+    volumes:
+      - ~/Documents/betest:/mnt/betest:ro
+    ports:
+      - 5006:5006
+    deploy:
+      replicas: 3
+    restart: always
+    command: bokeh serve /mnt/betest/testapp.py --allow-websocket-origin=demo.ryptco.com:5006
+
   frontend:
     depends_on:
       - nginx
-    image: fetest:latest
+    image: localhost:32000/fetest:latest
     restart: always
 
   nginx:  
@@ -16,8 +27,3 @@ services:
     ports:
       - 80:80
     restart: always
-
-
-
-
-
